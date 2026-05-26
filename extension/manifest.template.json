@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Chatter",
+  "version": "0.1.0",
+  "description": "Capture visible text from your current tab — with your permission.",
+  "permissions": ["activeTab", "identity", "storage", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup/index.html",
+    "default_title": "Chatter"
+  },
+  "content_scripts": [],
+  "oauth2": {
+    "client_id": "{{GOOGLE_CLIENT_ID}}",
+    "scopes": ["openid", "email", "profile"]
+  },
+  "icons": {}
+}

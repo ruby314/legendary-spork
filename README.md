@@ -26,6 +26,14 @@ npm install
 ### 3. Build and load the extension
 
 ```bash
+# Create your local env file from the example
+cp .env.example .env
+# Edit .env and paste your client ID
+```
+
+Then build and load:
+
+```bash
 npm run build
 ```
 
@@ -44,18 +52,7 @@ npm run build
 3. Copy the returned URL (e.g. `https://<extension-id>.chromiumapp.org/`)
 4. Go back to your OAuth client in GCP and add this URL under **Authorized redirect URIs**
 
-### 5. Add the client ID to the extension
-
-In `extension/manifest.json`, replace the placeholder:
-
-```json
-"oauth2": {
-  "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com",
-  "scopes": ["openid", "email", "profile"]
-}
-```
-
-### 6. Rebuild and reload
+### 5. Rebuild and reload
 
 ```bash
 npm run build
@@ -69,7 +66,7 @@ Click the refresh icon (↺) on the Chatter card in `chrome://extensions`.
 2. Sign in with Google
 3. Navigate to any webpage
 4. Click **Enable capture** — the popup turns green when active
-5. Captured text is logged in the service worker console (Service worker → DevTools)
+5. Captured text is logged in the service worker console (`chrome://extensions` → Service worker → DevTools)
 
 ## Development
 
@@ -79,13 +76,25 @@ npm run dev   # watch mode — rebuilds on file changes
 
 After each rebuild, click ↺ in `chrome://extensions` to reload.
 
+## Environment
+
+The client ID is kept out of version control. Copy `.env.example` to `.env` and fill in your value:
+
+```
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+```
+
+`manifest.json` is generated from `manifest.template.json` at build time — do not edit `manifest.json` directly.
+
 ## Project structure
 
 ```
 extension/
-  manifest.json          Chrome MV3 config
-  popup/                 React UI (3 states: login, idle, capturing)
-  background/            Service worker — handles auth tokens, message passing
-  content/               Injected into tab to extract document.body.innerText
-  lib/                   Auth (Google OAuth) and capture helpers
+  manifest.template.json  Chrome MV3 config template (committed)
+  .env.example            Environment variable template (committed)
+  .env                    Local secrets — not committed
+  popup/                  React UI (3 states: login, idle, capturing)
+  background/             Service worker — handles auth tokens, message passing
+  content/                Injected into tab to extract document.body.innerText
+  lib/                    Auth (Google OAuth) and capture helpers
 ```
